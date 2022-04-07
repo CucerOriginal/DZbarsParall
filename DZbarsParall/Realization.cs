@@ -8,6 +8,7 @@ namespace DZbarsParall
 {
     internal class Realization
     {
+        DummyRequestHandler dummyRequestHandler = new DummyRequestHandler();
         public void ConsoleRealization()
         {
             Console.WriteLine("Я запустил");
@@ -21,31 +22,24 @@ namespace DZbarsParall
                     Console.WriteLine("Все, я вырубаю");
                     break;
                 }
-                int count = 4;
-                string[] argStrings = new string[count];
+                List<string> listString = new List<string>();
                 Console.WriteLine("Так, а что мне отправить?");
                 string? cmd1 = "";
                 for (int i = 0; cmd1 != "/end"; i++)
                 {
-                    if (count <= i)
-                    {
-                        Array.Resize(ref argStrings, argStrings.Length * 2);
-                    }
                     cmd1 = Console.ReadLine();
                     if (cmd1 != "/end" && cmd1 != null)
                     {
-                        argStrings[i] = cmd1;
+                        listString.Add(cmd1);
                         Console.WriteLine("Что нибудь еще?");
                     }
                 }
-                ThreadPool.QueueUserWorkItem(callBack => DummyRealization(cmd, argStrings));
+                ThreadPool.QueueUserWorkItem(callBack => DummyRealization(cmd, listString.ToArray()));
             }
         }
 
         void DummyRealization(string cmd, string[] argStrings)
         {
-            DummyRequestHandler dummyRequestHandler = new DummyRequestHandler();
-
             try
             {
                 Console.WriteLine("Тут все ок, вот пруф " + dummyRequestHandler.HandleRequest(cmd, argStrings));
