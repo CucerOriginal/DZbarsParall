@@ -22,20 +22,26 @@ namespace DZbarsParall
                     Console.WriteLine("Все, я вырубаю");
                     break;
                 }
-                List<string> listString = new List<string>();
                 Console.WriteLine("Так, а что мне отправить?");
-                string? cmd1 = "";
-                for (int i = 0; cmd1 != "/end"; i++)
-                {
-                    cmd1 = Console.ReadLine();
-                    if (cmd1 != "/end" && cmd1 != null)
-                    {
-                        listString.Add(cmd1);
-                        Console.WriteLine("Что нибудь еще?");
-                    }
-                }
-                ThreadPool.QueueUserWorkItem(callBack => DummyRealization(cmd, listString.ToArray()));
+                string[] arrayString = ReadArguments().ToArray();
+                ThreadPool.QueueUserWorkItem(callBack => DummyRealization(cmd, arrayString));
             }
+        }
+
+        List<string> ReadArguments()
+        {
+            List<string> listString = new List<string>();
+            string? cmd = "";
+            for (int i = 0; cmd != "/end"; i++)
+            {
+                cmd = Console.ReadLine();
+                if (cmd != "/end" && cmd != null)
+                {
+                    listString.Add(cmd);
+                    Console.WriteLine("Что нибудь еще?");
+                }
+            }
+            return listString;
         }
 
         void DummyRealization(string cmd, string[] argStrings)
